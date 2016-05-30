@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    .login-form.modal
+        .modal-content
+            h4 Logga in
+            .input-field
+                input(id = 'email', type = 'email', class = 'validate')
+                label(for = 'email') Mailadress
+            .input-field
+                input(id = 'password', type = 'password', class = 'validate')
+                label(for = 'password') Lösenord
+        .modal-footer
+            a(href ='/map', class = 'modal-action modal-close waves-effect waves-green btn-flat') Logga in
+            a(href ='/', class = 'modal-action modal-close waves-effect waves-green btn-flat') Avbryt

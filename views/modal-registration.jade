@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    .registration-form.modal
+        .modal-content
+            h4 Skapa ett konto
+            .input-field
+                input(id = 'email', type = 'email', class = 'validate')
+                label(for = 'email') Mailadress
+            .input-field
+                input(id = 'password', type = 'password', class = 'validate')
+                label(for = 'password') Välj ett lösenord
+        .modal-footer
+            a(href ='/map', class = 'modal-action modal-close waves-effect waves-green btn-flat') Skapa konto
+            a(href ='/', class = 'modal-action modal-close waves-effect waves-green btn-flat') Avbryt

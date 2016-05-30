@@ -1,0 +1,56 @@
+/* general */
+
+body {
+    background: linear-gradient(
+        rgba(20,20,20, .7),
+        rgba(20,20,20, .5)),
+        url('../img/map.jpg');
+    background-size: cover;
+}
+
+
+/* header */
+
+.brand-logo {
+    margin-left: 10px;
+}
+
+.hide-on-med-and-down li a {
+    font-weight: bold;
+}
+
+.menu-icon {
+    margin-left: 10px;
+}
+
+/* main content */
+
+.landing-main-content {
+    margin-top: 200px;
+}
+
+h1 {
+    color: white;
+}
+
+
+h2 {
+    font-size: 24px;
+    color: white;
+    line-height: 1.3em;
+}
+
+/* modal */
+
+.modal-content h4 {
+    margin-bottom: 30px;
+    color: #4db6ac;
+}
+
+.btn-flat {
+    color: #4db6ac;
+    font-weight: bold;
+}
+
+
+
