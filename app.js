@@ -5,7 +5,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 
 var router = require('./routes/index');
-var map = require('./routes/map');
+var main = require('./routes/main');
 
 //view engine setup
 app.set('port', process.env.PORT || 8080);
@@ -18,6 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //routes
 app.use('/', router);
-app.use('/map', map);
+app.use('/main', main);
 
 module.exports = app;
