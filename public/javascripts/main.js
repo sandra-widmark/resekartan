@@ -29,15 +29,17 @@ $('#login-button').click(function(){
         password: password.val()
     }
     socket.emit('user login', data);
-
+    $('.error-div').empty();
 });
 
 socket.on('send user error message',function(){
-    console.log('Inloggning misslyckades, kunde inte hitta en användare med det namnet');
+    var errorMessageUser = 'Användarnamnet finns inte registrerat, försök igen.';
+    $('.error-div').append(errorMessageUser);
 });
 
 socket.on('send password error message',function(){
-   console.log('Inloggning misslyckades, fel lösenord');
+    var errorMessagePassword = 'Fel lösenord, försök igen.'
+    $('.error-div').append(errorMessagePassword);
 });
 
 socket.on('user authenticated',function(data){
@@ -45,4 +47,3 @@ socket.on('user authenticated',function(data){
    window.location.href = redirect;
    console.log('inloggad som ' + data.username);
 });
-
