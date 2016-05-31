@@ -8,7 +8,6 @@ body {
     background-size: cover;
 }
 
-
 /* header */
 
 .brand-logo {
@@ -34,7 +33,8 @@ h1 {
 }
 
 
-h2 {
+
+ h2 {
     font-size: 24px;
     color: white;
     line-height: 1.3em;
@@ -51,6 +51,3 @@ h2 {
     color: #4db6ac;
     font-weight: bold;
 }
-
-
-

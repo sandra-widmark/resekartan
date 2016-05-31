@@ -1,10 +1,10 @@
 extends layout
 
 block content
+    include ./modal-registration.jade
+    include ./modal-login.jade
     include ./main-header.jade
     .container.landing-main-content
         h1 Var har du varit i världen?
         h2 Bygg upp din egen dokumentation av länder du besökt. Kom igång genom att skapa ett konto, det är enkelt!
         a(class = 'waves-effect waves-light btn modal-trigger', href = '.registration-form') Skapa konto
-    include ./modal-registration.jade
-    include ./modal-login.jade
