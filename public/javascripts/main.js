@@ -3,6 +3,7 @@ var socket = io.connect('http://localhost:8080');
 $(document).ready(function(){
     $('.modal-trigger').leanModal();
     $(".button-collapse").sideNav();
+    $('select').material_select();
 });
 
 socket.on('connect', function(){
@@ -47,3 +48,5 @@ socket.on('user authenticated',function(data){
    window.location.href = redirect;
    console.log('inloggad som ' + data.username);
 });
+
+

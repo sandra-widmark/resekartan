@@ -1,11 +1,14 @@
 /* general */
 
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,900,900italic,500italic,400italic,300italic,300,100italic,100);
+
 body {
     background: linear-gradient(
         rgba(20,20,20, .7),
         rgba(20,20,20, .5)),
         url('../img/map.jpg');
     background-size: cover;
+    color: #333;
 }
 
 /* header */
@@ -40,10 +43,6 @@ h1 {
     line-height: 1.3em;
 }
 
- p {
-    color: #333;
-}
-
 /* modal */
 
 .modal-content h4 {
@@ -54,4 +53,41 @@ h1 {
 .btn-flat {
     color: #4db6ac;
     font-weight: bold;
+}
+
+
+/* map */
+
+#mapdiv {
+    height: 700px;
+    width: 90%;
+}
+
+
+/* select countries */
+
+#listdiv {
+    max-height: 200px;
+    overflow-y: scroll;
+    background-color: #fff;
+    border: 1px solid #fff;
+}
+
+#listdiv div ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+
+#listdiv div ul li a {
+    color: #4db6ac;
+    padding: 5px 10px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+#listdiv div ul li a:hover {
+    color: #fff;
+    background-color: #4db6ac;
 }
