@@ -1,14 +1,16 @@
 block content
     .registration-form.modal
         .modal-content
-            h4 Skapa ett konto
-            form(action ='/setup', method = 'post')
+            h4 Registrera konto
+            form(action ='/signup', method = 'post', enctype='application/x-www-form-urlencoded')
                 .input-field
-                    input(id = 'username-register', type = 'text', class = 'validate')
+                    input(id = 'username-register', name ='user[name]', type = 'text')
                     label(for = 'username-register') Välj ett användarnamn
                 .input-field
-                    input(id = 'password-register', type = 'password', class = 'validate')
+                    input(id = 'password-register', name ='user[password]',type = 'password')
                     label(for = 'password-register') Välj ett lösenord
+                .errorReg-div
+                    p #{userExistsMessage}
                 .modal-footer
-                    a(href ='/main', class = 'modal-action modal-close waves-effect waves-green btn-flat',id = 'register-button', type = 'submit') Skapa konto
+                    button(class = 'waves-effect waves-green btn-flat',id = 'login-button', type = 'submit', value = 'Submit') Registrera konto
                     a(href ='/', class = 'modal-action modal-close waves-effect waves-green btn-flat') Avbryt

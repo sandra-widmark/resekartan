@@ -11,10 +11,8 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
 var User = require('./models/user');
-
-//routes
-var router = require('./routes/index');
-var main = require('./routes/main');
+//var router = require('./routes/index');
+var session = require('express-session')
 
 //view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,10 +22,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //set up express application
 app.use(cookieParser());
 app.use(bodyParser());
+app.use(session({ secret: 'iloveyou' }));
 
 //routes
-app.use('/', router);
-app.use('/main', main);
+//app.use('/', router);
 
 //mongoose
 mongoose.connect(config.database);
@@ -38,48 +36,118 @@ db.once('open', function() {
   console.log('connected to database');
 });
 
+//User.remove({}, function (err) {
+//  if (err) return handleError(err);
+//});
+
+
 //bodyParser
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
 //socket
 io.on('connection', function(socket){
     console.log('user connected');
+});
 
-//save user to database
-    socket.on('user register', function(data){
-        var registeredUser = new User({
-            username: data.username,
-            password: data.password,
-            admin: true
-        });
+//routes
 
-        registeredUser.save(function(err) {
-        if (err) throw err;
+var sess;
 
-        console.log('User saved successfully');
-        });
+app.get('/', function(req, res, next) {
+    sess = req.session;
+    res.render('index');
+});
+
+app.post('/signup', function(req,res){
+    sess = req.session;
+    var registeredUser = new User({
+            username: req.body.user.name,
+            password: req.body.user.password,
+            admin: false
     });
+    User.findOne({
+        username: req.body.user.name
+        }, function(err, user){
+            if (err) throw err;
+            if(user) {
+                io.sockets.emit('user exists');
+            }
+            else {
+                registeredUser.save(function(err){
+                    console.log('User saved successfully');
+                    res.render('signup',{ user: req.body.user.name});
+                });
 
-    socket.on('user login', function(data){
-        console.log(data);
-        User.findOne({
-        username: data.username
+            }
+
+        });
+});
+
+app.post('/authenticate', function(req,res){
+    console.log(req.body.user.name);
+    User.findOne({
+        username: req.body.user.name
         }, function(err, user){
             if (err) throw err;
             if(!user) {
-               socket.emit('send user error message');
+               io.sockets.emit('send user error message');
+               console.log('wrong user');
             }
             else if(user) {
-                if (user.password != data.password){
-                    socket.emit('send password error message');
+                if (user.password != req.body.user.password){
+                    io.sockets.emit('send password error message');
+                    console.log('wrong password');
                 } else {
-                   socket.emit('user authenticated', data);
+                    sess = req.session;
+                    var token = jwt.sign(user,app.get('superSecret'),{
+                    expiresIn: 1440
+                    });
+                    sess.user = req.body.user.name;
+                    res.redirect('/main');
+                    console.log('enjoy the token for ' + sess.user + ' ' + token);
                 }
             }
 
-        });
+    });
+});
+
+app.get('/main', function(req, res, next) {
+    sess = req.session;
+    if(sess.user){
+        res.render('main',{ user: sess.user});
+    }
+    else {
+        res.redirect('/');
+    }
+});
+
+app.get('/users', function(req,res){
+    sess = req.session;
+    User.findOne({
+        username: sess.user
+        }, function(err, user){
+            if (err) throw err;
+            if(user && user.admin == true) {
+                User.find({}, function(err, users) {
+                res.json(users);
+                });
+            }
+            else {
+                res.redirect('/');
+            }
+    });
+
+});
+
+app.get('/logout',function(req,res){
+    req.session.destroy(function(err) {
+      if(err) {
+        console.log(err);
+      } else {
+        res.redirect('/');
+      }
     });
 });
 

@@ -1,52 +1,33 @@
-var socket = io.connect('http://localhost:8080');
+var socket = io.connect();
 
 $(document).ready(function(){
-    $('.modal-trigger').leanModal();
+    $('.modal-trigger').leanModal({
+        dismissible: false
+    });
     $(".button-collapse").sideNav();
     $('select').material_select();
 });
 
-socket.on('connect', function(){
-       // socket.emit('show users');
-    });
-
-$('#register-button').click(function(){
-    console.log('button clicked');
-    var username = $('#username-register');
-    var password = $('#password-register');
-    var data = {
-        username: username.val(),
-        password: password.val()
-    }
-    socket.emit('user register', data);
-});
-
 $('#login-button').click(function(){
-    console.log('button clicked');
-    var username = $('#username-login');
-    var password = $('#password-login');
-    var data = {
-        username: username.val(),
-        password: password.val()
-    }
-    socket.emit('user login', data);
-    $('.error-div').empty();
+    socket.emit('user login');
 });
+
+socket.on('user exists',function(){
+    $('.errorReg-div').empty();
+    var errorUserExists = 'Användarnamnet finns redan, försök igen.';
+    $('.errorReg-div').append(errorUserExists);
+});
+
 
 socket.on('send user error message',function(){
+    $('.error-div').empty();
     var errorMessageUser = 'Användarnamnet finns inte registrerat, försök igen.';
     $('.error-div').append(errorMessageUser);
 });
 
+
 socket.on('send password error message',function(){
-    var errorMessagePassword = 'Fel lösenord, försök igen.'
+    $('.error-div').empty();
+    var errorMessagePassword = 'Fel lösenord, försök igen.';
     $('.error-div').append(errorMessagePassword);
 });
-
-socket.on('user authenticated',function(data){
-   var redirect = '/main';
-   window.location.href = redirect;
-   console.log('inloggad som ' + data.username);
-});
-
-

@@ -2,14 +2,14 @@ block content
     .login-form.modal
         .modal-content
             h4 Logga in
-            form(action ='/login', method = 'post')
+            form(action ='/authenticate', method = 'post', enctype='application/x-www-form-urlencoded')
                 .input-field
-                    input(id = 'username-login', type = 'text', class = 'validate')
+                    input(id = 'username-login', name ='user[name]', type = 'text')
                     label(for = 'username-login') Användarnamn
                 .input-field
-                    input(id = 'password-login', type = 'password', class = 'validate')
+                    input(id = 'password-login', name ='user[password]',type = 'password')
                     label(for = 'password-login') Lösenord
                 .error-div
                 .modal-footer
-                    a(href ='#', class = 'modal-action waves-effect waves-green btn-flat',id = 'login-button', type = 'submit') Logga in
+                    button(class = 'waves-effect waves-green btn-flat',id = 'login-button', type = 'submit', value = 'Submit') Logga in
                     a(href ='/', class = 'modal-action modal-close waves-effect waves-green btn-flat') Avbryt

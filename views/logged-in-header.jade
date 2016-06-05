@@ -10,14 +10,10 @@ block content
                 li
                     a(href = '#') Inloggad som: #{user}
                 li
-                    a(href = '#') Om resekartan
-                li
                     a(href = '/') Logga ut
             ul(class ='side-nav', id = 'mobile-demo')
                 li
-                    a(href = '#') Konto
+                    a(href = '#') Inloggad som: #{user}
                 li
-                    a(href = '#') Om resekartan
-                li
-                    a(href = '/') Logga ut
+                    a(href = '/logout') Logga ut
             a(href = '#',data-activates = 'slide-out', class = 'button-collapse')
