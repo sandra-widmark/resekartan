@@ -1,9 +1,17 @@
-var map = AmCharts.makeChart( "mapdiv", {
+map = AmCharts.makeChart( "mapdiv", {
 
   "type": "map",
+  "panEventsEnabled": true,
 
   "dataProvider": {
     "map": "worldLow",
+    "areas": [
+    {
+      "title": "Sweden",
+      "showAsSelected": "true"
+    }
+
+    ],
     "getAreasFromMap": true,
     "showAsSelected": true,
     "addClassNames" : true,
@@ -39,4 +47,23 @@ map.addListener('selectedMapObject', function(){
       list[i].addClass('selected');
     }
   });
+});
+
+map.addListener('clickMapObject', function(event){
+  map.selectedobject = map.dataProvider;
+
+  event.mapObject.showAsSelected = !event.mapObject.showAsSelected;
+
+  map.returnInitialColor(event.mapObject);
+
+      var countries = [];
+        for (var i in map.dataProvider.areas) {
+            var area = map.dataProvider.areas[i];
+            if (area.showAsSelected) {
+                countries.push(area.title);
+                console.log(countries);
+            }
+        }
+  $('.country-form').openModal();
+
 });

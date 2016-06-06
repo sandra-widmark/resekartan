@@ -6,6 +6,10 @@ $(document).ready(function(){
     });
     $(".button-collapse").sideNav();
     $('select').material_select();
+    $('.datepicker').pickadate({
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
+
 });
 
 $('#login-button').click(function(){

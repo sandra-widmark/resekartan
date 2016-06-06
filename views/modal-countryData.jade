@@ -1,0 +1,18 @@
+block content
+    .country-form.modal
+        .modal-content
+            h4 Lägg till information om resmålet!
+            form(action ='/informationUpdate', method = 'post', enctype='application/x-www-form-urlencoded')
+                .input-field
+                    select(multiple)
+                        option(value='1') Semestrat här
+                        option(value='1') Född här
+                        option(value='1') Bor här
+                        option(value='1') Jobbat här
+                    label Välj ett eller flera alternativ
+                .input-field
+                    textarea#textarea1.materialize-textarea
+                    label(for="textarea1") Eventuell kommentar (till exempel vilken/vilka städer du besökte).
+                .modal-footer
+                    button(class = 'waves-effect waves-green btn-flat',id = 'save-button', type = 'submit', value = 'Submit') Spara
+                    a(href ='/main', class = 'modal-action modal-close waves-effect waves-green btn-flat') Avbryt
