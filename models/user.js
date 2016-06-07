@@ -4,5 +4,10 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('User', new Schema({
     username: String,
     password: String,
-    admin: Boolean
+    admin: Boolean,
+    country: String,
+    information: String,
+    comment: String
 }));
+
+

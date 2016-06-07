@@ -36,9 +36,13 @@ db.once('open', function() {
   console.log('connected to database');
 });
 
-//User.remove({}, function (err) {
-//  if (err) return handleError(err);
-//});
+User.remove({}, function (err) {
+if (err) return handleError(err);
+});
+
+countryInfo.remove({}, function (err) {
+if (err) return handleError(err);
+});
 
 
 //bodyParser
@@ -65,7 +69,7 @@ app.post('/signup', function(req,res){
     var registeredUser = new User({
             username: req.body.user.name,
             password: req.body.user.password,
-            admin: false
+            admin: true
     });
     User.findOne({
         username: req.body.user.name
@@ -121,6 +125,22 @@ app.get('/main', function(req, res, next) {
     else {
         res.redirect('/');
     }
+});
+
+
+app.post('/main', function(req,res){
+    sess = req.session;
+    var countryData = new User({
+            username: sess.user,
+            country: req.body.country,
+            information: req.body.information,
+            comment: req.body.comment
+    });
+    countryData.save(function(err,data){
+        console.log('country info saved successfully');
+            io.sockets.emit('country data saved', data);
+            console.log('this is save function', data.country);
+    });
 });
 
 app.get('/users', function(req,res){

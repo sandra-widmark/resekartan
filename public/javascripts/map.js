@@ -1,3 +1,5 @@
+var socket = io.connect();
+
 map = AmCharts.makeChart( "mapdiv", {
 
   "type": "map",
@@ -64,6 +66,22 @@ map.addListener('clickMapObject', function(event){
                 console.log(countries);
             }
         }
-  $('.country-form').openModal();
+  var currentCountry = event.mapObject.title;
+    $('#country-input').attr("value", currentCountry);
+    $('.country-form').openModal();
+
+    socket.on('country data saved',function(data){
+        $('.country-form').closeModal();
+        console.log(currentCountry, data.country);
+        if(currentCountry == data.country){
+          //map.returnInitialColor(event.mapObject);
+          console.log(event.mapObject);
+        }
+    });
 
 });
+
+
+
+
+
