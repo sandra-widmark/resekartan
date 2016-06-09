@@ -5,13 +5,12 @@ var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 8080
-
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
 var User = require('./models/user');
-//var router = require('./routes/index');
+var userCountryInfo = require('./models/userCountryInfo');
 var session = require('express-session')
 
 //view engine setup
@@ -24,9 +23,6 @@ app.use(cookieParser());
 app.use(bodyParser());
 app.use(session({ secret: 'iloveyou' }));
 
-//routes
-//app.use('/', router);
-
 //mongoose
 mongoose.connect(config.database);
 app.set('superSecret', config.secret);
@@ -36,23 +32,35 @@ db.once('open', function() {
   console.log('connected to database');
 });
 
-User.remove({}, function (err) {
-if (err) return handleError(err);
-});
+//remove data from database
+//User.remove({}, function (err) {
+//if (err) return handleError(err);
+//});
 
-countryInfo.remove({}, function (err) {
-if (err) return handleError(err);
-});
-
+//userCountryInfo.remove({}, function (err) {
+//if (err) return handleError(err);
+//});
 
 //bodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 //socket
 io.on('connection', function(socket){
     console.log('user connected');
+    socket.on('save selection data', function(data){
+            var countrySelectData = new userCountryInfo({
+            username: sess.user,
+            country: data,
+            showAsSelected: true
+        });
+            countrySelectData.save(function(err,data){
+            console.log('country select saved successfully');
+            socket.emit('country select saved', data);
+            console.log('this is save select function', data);
+            });
+
+        });
 });
 
 //routes
@@ -120,6 +128,7 @@ app.post('/authenticate', function(req,res){
 app.get('/main', function(req, res, next) {
     sess = req.session;
     if(sess.user){
+        //kör find-funktion här för att hitta länderna som är sparade i databasen.
         res.render('main',{ user: sess.user});
     }
     else {
@@ -127,21 +136,23 @@ app.get('/main', function(req, res, next) {
     }
 });
 
-
-app.post('/main', function(req,res){
+app.get('/userCountryData', function(req,res){
     sess = req.session;
-    var countryData = new User({
-            username: sess.user,
-            country: req.body.country,
-            information: req.body.information,
-            comment: req.body.comment
+    userCountryInfo.findOne({
+        username: sess.user
+        }, function(err, user){
+            if (err) throw err;
+            if(user) {
+                userCountryInfo.find({}, function(err, userinfo) {
+                res.json(userinfo);
+                });
+            }
+            else {
+                res.redirect('/');
+            }
     });
-    countryData.save(function(err,data){
-        console.log('country info saved successfully');
-            io.sockets.emit('country data saved', data);
-            console.log('this is save function', data.country);
-    });
-});
+
+})
 
 app.get('/users', function(req,res){
     sess = req.session;
@@ -170,7 +181,6 @@ app.get('/logout',function(req,res){
       }
     });
 });
-
 
 http.listen(port, function(){
     console.log('listening on 8080');

@@ -7,13 +7,7 @@ map = AmCharts.makeChart( "mapdiv", {
 
   "dataProvider": {
     "map": "worldLow",
-    "areas": [
-    {
-      "title": "Sweden",
-      "showAsSelected": "true"
-    }
-
-    ],
+    "areas": [],
     "getAreasFromMap": true,
     "showAsSelected": true,
     "addClassNames" : true,
@@ -42,46 +36,17 @@ map = AmCharts.makeChart( "mapdiv", {
 
 });
 
-map.addListener('selectedMapObject', function(){
-  var list = $('#listdiv').$('a');
-  list.each(function(i){
-    if(list[i].text == event.mapObject.title){
-      list[i].addClass('selected');
-    }
-  });
-});
 
 map.addListener('clickMapObject', function(event){
   map.selectedobject = map.dataProvider;
-
   event.mapObject.showAsSelected = !event.mapObject.showAsSelected;
-
   map.returnInitialColor(event.mapObject);
-
-      var countries = [];
-        for (var i in map.dataProvider.areas) {
-            var area = map.dataProvider.areas[i];
-            if (area.showAsSelected) {
-                countries.push(area.title);
-                console.log(countries);
-            }
-        }
-  var currentCountry = event.mapObject.title;
-    $('#country-input').attr("value", currentCountry);
-    $('.country-form').openModal();
-
-    socket.on('country data saved',function(data){
-        $('.country-form').closeModal();
-        console.log(currentCountry, data.country);
-        if(currentCountry == data.country){
-          //map.returnInitialColor(event.mapObject);
-          console.log(event.mapObject);
-        }
-    });
-
+  var data = event.mapObject.title;
+  socket.emit('save selection data', data);
 });
 
-
-
-
-
+socket.on('country select saved', function(data){
+    console.log('hello I am the client socket', data.country);
+    var countries = ' ' + data.country + ',' +' ';
+    $('.information').append(countries);
+});

@@ -1,9 +1,10 @@
 extends layout
 
 block content
-    include ./modal-countryData.jade
     include ./logged-in-header.jade
     .container
         h2 Välj det land du har besökt genom att klicka på kartan eller välja från listan nedanför.
+        .information #{user} har varit i:
         #mapdiv
         #listdiv
+

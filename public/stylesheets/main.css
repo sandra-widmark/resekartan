@@ -35,9 +35,7 @@ h1 {
     color: white;
 }
 
-
-
- h2 {
+h2 {
     font-size: 24px;
     color: white;
     line-height: 1.3em;
@@ -90,4 +88,10 @@ h1 {
 #listdiv div ul li a:hover {
     color: #fff;
     background-color: #4db6ac;
+}
+
+/* information div */
+
+.information {
+    color: #fff;
 }

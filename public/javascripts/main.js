@@ -6,9 +6,6 @@ $(document).ready(function(){
     });
     $(".button-collapse").sideNav();
     $('select').material_select();
-    $('.datepicker').pickadate({
-        selectYears: 15 // Creates a dropdown of 15 years to control year
-  });
 
 });
 
@@ -22,13 +19,11 @@ socket.on('user exists',function(){
     $('.errorReg-div').append(errorUserExists);
 });
 
-
 socket.on('send user error message',function(){
     $('.error-div').empty();
     var errorMessageUser = 'Användarnamnet finns inte registrerat, försök igen.';
     $('.error-div').append(errorMessageUser);
 });
-
 
 socket.on('send password error message',function(){
     $('.error-div').empty();
