@@ -119,3 +119,85 @@ var currentCountry = event.mapObject;
     });
 });
 
+
+
+
+    //handle deselected elements
+    var countriesArray = [];
+        for (var i in map.dataProvider.areas) {
+            var area = map.dataProvider.areas[i];
+            if (!area.showAsSelected) {
+                countriesArray.push(area.title);
+                console.log(countriesArray);
+                function findCountry(data){
+                  return data === "Sweden"; //gör om här så att den kan hitta data.id
+                }
+                console.log(countriesArray.find(findCountry));
+            }
+        }
+
+
+
+        for (var i in map.dataProvider.areas) {
+            var area = map.dataProvider.areas[i];
+            if (!area.showAsSelected) {
+              //console.log(data.country + 'is unselected');
+
+            }
+        }
+
+
+
+        //socket
+/*io.on('connection', function(socket){
+    console.log('user connected');
+    socket.on('user_add_country', function(two_letter_code){
+        var callback = function(err,country,created){
+            if(err) throw err;
+            .user,{$push: {visited_countries: country.id}}
+            sess.user.save();
+        }
+        Country.findOrCreate({two_letter_code: two_letter_code}, callback);
+});
+
+
+
+
+ socket.on('save selection data', function(data){
+            var countrySelectData = new userCountryInfo({
+            username: sess.user,
+            country: data,
+            showAsSelected: true
+        });
+            countrySelectData.save(function(err,data){
+            console.log('country select saved successfully');
+            socket.emit('country select saved', data);
+            console.log('this is save select function', data);
+            });
+
+        });
+
+});
+*/
+
+//routes
+
+
+// app.get('/userCountryData', function(req,res){
+//     sess = req.session;
+//     userCountryInfo.findOne({
+//         username: sess.user
+//         }, function(err, user){
+//             if (err) throw err;
+//             if(user) {
+//                 userCountryInfo.find({}, function(err, userinfo) {
+//                 res.json(userinfo);
+//                 });
+//             }
+//             else {
+//                 res.redirect('/');
+//             }
+//     });
+
+// })
+

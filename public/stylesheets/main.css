@@ -53,14 +53,12 @@ h2 {
     font-weight: bold;
 }
 
-
 /* map */
 
 #mapdiv {
     height: 700px;
     width: 90%;
 }
-
 
 /* select countries */
 
@@ -75,7 +73,6 @@ h2 {
     list-style: none;
     padding-left: 0;
 }
-
 
 #listdiv div ul li a {
     color: #4db6ac;
@@ -92,6 +89,6 @@ h2 {
 
 /* information div */
 
-.information {
+#information {
     color: #fff;
 }

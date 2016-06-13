@@ -1,10 +1,10 @@
-var socket = io.connect();
-
 map = AmCharts.makeChart( "mapdiv", {
 
   "type": "map",
   "panEventsEnabled": true,
-
+  "export": {
+          "enabled": true,
+        },
   "dataProvider": {
     "map": "worldLow",
     "areas": [],
@@ -41,12 +41,21 @@ map.addListener('clickMapObject', function(event){
   map.selectedobject = map.dataProvider;
   event.mapObject.showAsSelected = !event.mapObject.showAsSelected;
   map.returnInitialColor(event.mapObject);
-  var data = event.mapObject.title;
-  socket.emit('save selection data', data);
 });
+  /*var two_letter_code = event.mapObject.id;
+  if (event.mapObject.showAsSelected){
+    socket.emit('user_add_country', two_letter_code);
+  } else {
+    socket.emit('user_remove_country', two_letter_code);
+  }
+  console.log(event.mapObject);
 
 socket.on('country select saved', function(data){
     console.log('hello I am the client socket', data.country);
+
+    //Show the country data to the user
     var countries = ' ' + data.country + ',' +' ';
-    $('.information').append(countries);
+    $('#information').append(countries);
 });
+
+*/

@@ -1,5 +1,5 @@
 block content
-    .login-form.modal
+    .auth-failure-form.modal
         .modal-content
             h4 Logga in
             form(action ='/authenticate', method = 'post', enctype='application/x-www-form-urlencoded')
@@ -9,7 +9,8 @@ block content
                 .input-field
                     input(id = 'password-login', name ='password',type = 'password')
                     label(for = 'password-login') Lösenord
-                .error-div
+                .errorAuth-div
+                    p #{errormessage}
                 .modal-footer
                     button(class = 'waves-effect waves-green btn-flat',id = 'login-button', type = 'submit', value = 'Submit') Logga in
                     a(href ='/', class = 'modal-action modal-close waves-effect waves-green btn-flat') Avbryt

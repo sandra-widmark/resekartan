@@ -1,4 +1,4 @@
 module.exports = {
   'secret': 'iloveyou',
-  'database':'mongodb://localhost/app'
+  'database':'mongodb://127.0.0.1/resekartan'
 }
