@@ -82,13 +82,19 @@ h2 {
     font-size: 14px;
 }
 
-#listdiv div ul li a:hover {
+
+#listdiv div ul li:hover {
     color: #fff;
     background-color: #4db6ac;
+    cursor: pointer;
+}
+
+#listdiv div ul li a:hover {
+    color: #fff;
 }
 
 /* information div */
 
-#information {
+#selected-countries {
     color: #fff;
 }

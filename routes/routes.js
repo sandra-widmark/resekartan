@@ -6,6 +6,7 @@ var session = require('express-session');
 router.use(session({ secret: 'iloveyou' }));
 var sess;
 
+
 //start page
 router.get('/', function(req, res, next) {
     sess = req.session;
@@ -13,7 +14,6 @@ router.get('/', function(req, res, next) {
 });
 
 //user signup
-
 router.get('/user-failure', function(req, res, next) {
     sess = req.session;
     res.render('user-failure', {errormessage: 'Användarnamnet finns redan, försök igen.'});
@@ -45,7 +45,6 @@ router.post('/signup', function(req,res){
 });
 
 //user authentication
-
 router.get('/auth-failure', function(req, res, next) {
     sess = req.session;
     res.render('auth-failure', {errormessage: 'Kombinationen av användarnamn och lösenord finns inte.'});
@@ -79,8 +78,18 @@ router.get('/main', function(req, res, next) {
     else {
         //res.redirect('/');
         console.log('user session does not exist');
-        res.render('main',{ user: sess.user});
+        res.redirect('/main');
     }
+});
+
+//user add country
+router.post('/user_add_country', function(req,res){
+    sess = req.session;
+    User.findOneAndUpdate({ username: 'sandra12' }, { $set: { visited_countries: req.body.two_letter_code } }, { new: true }, function(err, doc) {
+        console.log(doc.visited_countries);
+        console.log(req.body.two_letter_code);
+        res.send(req.body);
+    });
 });
 
 //logout function
