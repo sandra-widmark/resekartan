@@ -7,3 +7,4 @@ module.exports = mongoose.model('User', new Schema({
     admin: Boolean,
     visited_countries: [String]
 }));
+

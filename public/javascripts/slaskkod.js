@@ -1,3 +1,19 @@
+   sess = req.session;
+    user.visited_countries.push({ id: req.body.two_letter_code });
+    var subdoc = user.visited_countries;
+    console.log(subdoc);
+    subdoc.isNew; //true
+    console.log(req.body.two_letter_code);
+    res.send(req.body);
+
+    user.save(function (err) {
+        if (err) throw (err)
+        console.log('Success!');
+    });
+
+
+
+
 map.addListener('selectedMapObject', function(){
   var list = $('#listdiv').$('a');
   list.each(function(i){

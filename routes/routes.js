@@ -6,6 +6,9 @@ var session = require('express-session');
 router.use(session({ secret: 'iloveyou' }));
 var sess;
 
+//User.remove({}, function(err) {
+   //console.log('collection removed')
+//});
 
 //start page
 router.get('/', function(req, res, next) {
@@ -84,11 +87,25 @@ router.get('/main', function(req, res, next) {
 
 //user add country
 router.post('/user_add_country', function(req,res){
-    sess = req.session;
-    User.findOneAndUpdate({ username: 'sandra12' }, { $set: { visited_countries: req.body.two_letter_code } }, { new: true }, function(err, doc) {
-        console.log(doc.visited_countries);
-        console.log(req.body.two_letter_code);
-        res.send(req.body);
+    User.update({username: 'test'},{$addToSet:
+        {visited_countries:[req.body.two_letter_code]}},
+        {upsert:true},
+        function(err){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("Successfully added");
+                User.findOne({
+                    username: 'test'},
+                    function(err, user){
+                        if (err) throw err;
+                            User.find({}, function(err, users) {
+                            console.log(users[0].visited_countries);
+                            //res.send(users[0].visited_countries);
+                            });
+
+                    });
+            }
     });
 });
 
