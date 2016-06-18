@@ -7,10 +7,7 @@ map = AmCharts.makeChart( "mapdiv", {
         },
   "dataProvider": {
     "map": "worldHigh",
-    "areas": [
-    {id:"RU",
-    showAsSelected: true
-  }],
+    "areas": [],
     "getAreasFromMap": true,
     "showAsSelected": true,
     "addClassNames" : true,
@@ -63,6 +60,17 @@ map.addListener("clickMapObject",function(event){
   }
 
   else {
+    $.ajax({
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: 'http://localhost:8080/user_remove_country',
+      success: function(data){
+        var selectedCountries = data;
+        console.log(selectedCountries);
+        localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
+      }
+    });
 
   }
 });

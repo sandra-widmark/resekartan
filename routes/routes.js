@@ -7,7 +7,7 @@ router.use(session({ secret: 'iloveyou' }));
 var sess;
 
 //User.remove({}, function(err) {
-   //console.log('collection removed')
+ //  console.log('collection removed')
 //});
 
 //start page
@@ -95,6 +95,31 @@ router.post('/user_add_country', function(req,res){
                 console.log(err);
             } else {
                 console.log("Successfully added");
+                User.findOne({
+                    username: 'test'},
+                    function(err, user){
+                        if (err) throw err;
+                            User.find({}, function(err, user) {
+                            var countriesArray = user[0].visited_countries;
+                            console.log(user[0].visited_countries);
+                            res.send(countriesArray);
+                            });
+
+                    });
+            }
+    });
+});
+
+//user remove country
+router.post('/user_remove_country', function(req,res){
+    User.update({username: 'test'},{$pull:
+        {visited_countries:[req.body.two_letter_code]}},
+        {upsert:true},
+        function(err){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("Successfully removed");
                 User.findOne({
                     username: 'test'},
                     function(err, user){
