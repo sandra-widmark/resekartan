@@ -55,9 +55,9 @@ map.addListener("clickMapObject",function(event){
       contentType: 'application/json',
       url: 'http://localhost:8080/user_add_country',
       success: function(data){
-        var selectedCountry = JSON.stringify(data.two_letter_code);
-        console.log(selectedCountry);
-        localStorage.setItem('country', JSON.stringify(data.two_letter_code));
+        var selectedCountries = data;
+        console.log(selectedCountries);
+        localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
       }
     });
   }
@@ -67,25 +67,17 @@ map.addListener("clickMapObject",function(event){
   }
 });
 
-var message = JSON.parse(localStorage.getItem('country'));
-console.log(message);
+var countriesArray = JSON.parse(localStorage["selectedCountries"]);
 
 map.updateSelection = function(){
   var areas = [];
-  //for(var i in countriesArray){
-  //var id = countriesArray[i];
-  //areas.push({ id: id, showAsSelected: true });
-  //map.dataProvider.areas = areas;
-  //map.validateData();
-  //}
- //$(".section-map-list input:checked").each(function(){ //message?
-    //var selectedCountry = "SE";
-    areas.push({ id: message, showAsSelected: true });
+  for(var i in countriesArray){
+    var id = countriesArray[i];
+    areas.push({ id: id, showAsSelected: true });
     map.dataProvider.areas = areas;
     map.validateData();
     console.log('det här är update-selection');
-    console.log(map.dataProvider.areas);
-  //});
+  }
   return areas;
 }
 map.updateSelection();

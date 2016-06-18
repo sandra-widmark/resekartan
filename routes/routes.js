@@ -99,9 +99,10 @@ router.post('/user_add_country', function(req,res){
                     username: 'test'},
                     function(err, user){
                         if (err) throw err;
-                            User.find({}, function(err, users) {
-                            console.log(users[0].visited_countries);
-                            //res.send(users[0].visited_countries);
+                            User.find({}, function(err, user) {
+                            var countriesArray = user[0].visited_countries;
+                            console.log(user[0].visited_countries);
+                            res.send(countriesArray);
                             });
 
                     });
