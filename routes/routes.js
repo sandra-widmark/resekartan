@@ -2,8 +2,12 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var session = require('express-session');
+var bodyParser = require('body-parser');
 
-router.use(session({ secret: 'iloveyou' }));
+router.use(session({ secret: 'iloveyou', resave: true, }));
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended: true}));
+
 var sess;
 
 //User.remove({}, function(err) {
@@ -77,17 +81,32 @@ router.get('/main', function(req, res, next) {
     sess = req.session;
     if(sess.user){
         res.render('main',{ user: sess.user});
+        //get user countries
+        router.post('/get_user_countries', function(req, res, next) {
+            sess = req.session;
+            console.log(sess.user);
+            User.find({
+            username: sess.user
+            }, function(err, user) {
+            if (err) throw err;
+            var countriesArray = user[0].visited_countries;
+            console.log('this is the login country finder',user[0].visited_countries);
+            res.send(countriesArray);
+            });
+        });
     }
     else {
-        //res.redirect('/');
         console.log('user session does not exist');
-        res.redirect('/main');
+        res.redirect('/');
     }
 });
 
+
 //user add country
 router.post('/user_add_country', function(req,res){
-    User.update({username: 'test'},{$addToSet:
+    sess = req.session;
+    console.log(sess.user);
+    User.update({username: sess.user },{$addToSet:
         {visited_countries:[req.body.two_letter_code]}},
         {upsert:true},
         function(err){
@@ -95,24 +114,25 @@ router.post('/user_add_country', function(req,res){
                 console.log(err);
             } else {
                 console.log("Successfully added");
-                User.findOne({
-                    username: 'test'},
-                    function(err, user){
-                        if (err) throw err;
-                            User.find({}, function(err, user) {
-                            var countriesArray = user[0].visited_countries;
-                            console.log(user[0].visited_countries);
-                            res.send(countriesArray);
-                            });
 
-                    });
+                User.find({
+                    username: sess.user
+                }, function(err, user) {
+                if (err) throw err;
+                var countriesArray = user[0].visited_countries;
+                console.log(user[0].visited_countries);
+                res.send(countriesArray);
+                });
+
             }
     });
 });
 
 //user remove country
 router.post('/user_remove_country', function(req,res){
-    User.update({username: 'test'},{$pull:
+    sess = req.session;
+    console.log(sess.user);
+    User.update({username: sess.user},{$pull:
         {visited_countries:[req.body.two_letter_code]}},
         {upsert:true},
         function(err){
@@ -120,17 +140,14 @@ router.post('/user_remove_country', function(req,res){
                 console.log(err);
             } else {
                 console.log("Successfully removed");
-                User.findOne({
-                    username: 'test'},
-                    function(err, user){
-                        if (err) throw err;
-                            User.find({}, function(err, user) {
-                            var countriesArray = user[0].visited_countries;
-                            console.log(user[0].visited_countries);
-                            res.send(countriesArray);
-                            });
-
-                    });
+                User.find({
+                    username: sess.user
+                }, function(err, user) {
+                if (err) throw err;
+                var countriesArray = user[0].visited_countries;
+                console.log(user[0].visited_countries);
+                res.send(countriesArray);
+                });
             }
     });
 });

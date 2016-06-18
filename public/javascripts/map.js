@@ -34,6 +34,17 @@ map = AmCharts.makeChart( "mapdiv", {
   }
 });
 
+$.ajax({
+  type: 'POST',
+  contentType: 'application/json',
+  url: 'http://localhost:8080/get_user_countries',
+  success: function(data){
+    var selectedCountries = data;
+    console.log(selectedCountries);
+    localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
+  }
+});
+
 map.addListener("clickMapObject",function(event){
 
   var data = {
