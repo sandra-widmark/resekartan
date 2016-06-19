@@ -103,6 +103,7 @@ router.get('/main', function(req, res, next) {
             var countriesArray = user[0].visited_countries;
             console.log('this is the login country finder',user[0].visited_countries);
             res.send(countriesArray);
+            res.render('main');
             });
         });
     }

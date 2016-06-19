@@ -40,7 +40,7 @@ $.ajax({
   url: 'http://localhost:8080/get_user_countries',
   success: function(data){
     var selectedCountries = data;
-    //console.log(selectedCountries);
+    console.log(selectedCountries);
     localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
   }
 });
@@ -64,7 +64,7 @@ map.addListener("clickMapObject",function(event){
       url: 'http://localhost:8080/user_add_country',
       success: function(data){
         var selectedCountries = data;
-        //console.log(selectedCountries);
+        console.log(selectedCountries);
         localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
       }
     });
@@ -78,7 +78,7 @@ map.addListener("clickMapObject",function(event){
       url: 'http://localhost:8080/user_remove_country',
       success: function(data){
         var selectedCountries = data;
-        //console.log(selectedCountries);
+        console.log(selectedCountries);
         localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
       }
     });
@@ -95,7 +95,7 @@ map.updateSelection = function(){
     areas.push({ id: id, showAsSelected: true });
     map.dataProvider.areas = areas;
     map.validateData();
-    //console.log('det här är update-selection');
+    console.log('det här är update-selection');
   }
   return areas;
 }
