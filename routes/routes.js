@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+var bcrypt = require('bcrypt-nodejs');
 
 router.use(session({ secret: 'iloveyou', resave: true, }));
 router.use(bodyParser.json());
@@ -11,12 +12,11 @@ router.use(bodyParser.urlencoded({extended: true}));
 var sess;
 
 //User.remove({}, function(err) {
- //  console.log('collection removed')
+//console.log('collection removed')
 //});
 
 //start page
 router.get('/', function(req, res, next) {
-    sess = req.session;
     res.render('index');
 });
 
@@ -27,28 +27,39 @@ router.get('/user-failure', function(req, res, next) {
 });
 
 router.post('/signup', function(req,res){
+    var username = req.body.username;
+    var password = req.body.password;
+    var admin = true;
+
     var callback = function(err,user){
         if(err) throw err;
         if (user){
             console.log('user exists');
             res.redirect('/user-failure');
         } else {
-            var user = new User({
-                username: req.body.username,
-                password: req.body.password,
-                admin: true
-            });
+            var user = new User();
+            user.username = username;
+            user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(9));
+            user.admin = admin;
+
             user.save(function(err){
                 if(err) throw err;
                 sess = req.session;
                 sess.user = req.body.username;
-                res.redirect('/main');
+                res.render('welcome', {user: req.body.username});
             });
         }
     };
     User.findOne({
         username: req.body.username
     }, callback);
+});
+
+//welcome page
+router.get('/signup', function(req, res, next) {
+    sess = req.session;
+    sess.user = req.body.username;
+    res.render('welcome');
 });
 
 //user authentication
@@ -59,15 +70,15 @@ router.get('/auth-failure', function(req, res, next) {
 
 router.post('/authenticate', function(req,res){
     var callback = function(err, user) {
-        if(err) throw err;
-        if(!user || user.password != req.body.password) {
-            console.log('auth failure');
-            res.redirect('/auth-failure');
-        }
-        else {
+        if (user && bcrypt.compareSync(req.body.password, user.password)) {
+            console.log("user authenticated");
             sess = req.session;
             sess.user = req.body.username;
             res.redirect('/main');
+        }
+        else {
+            console.log('auth failure');
+            res.redirect('/auth-failure');
         }
     };
     var params = {
@@ -152,16 +163,6 @@ router.post('/user_remove_country', function(req,res){
     });
 });
 
-//logout function
-router.get('/logout',function(req,res){
-    req.session.destroy(function(err) {
-      if(err) {
-        console.log(err);
-      } else {
-        res.redirect('/');
-      }
-    });
-});
 
 //show registered users
 router.get('/users', function(req,res){
@@ -180,6 +181,5 @@ router.get('/users', function(req,res){
             }
     });
 });
-
 
 module.exports = router;

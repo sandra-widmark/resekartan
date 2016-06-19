@@ -21,6 +21,10 @@ body {
     font-weight: bold;
 }
 
+#logga-ut-mobile {
+    margin-top: 100px;
+}
+
 .menu-icon {
     margin-left: 10px;
 }
@@ -39,6 +43,12 @@ h2 {
     font-size: 24px;
     color: white;
     line-height: 1.3em;
+}
+
+h3 {
+    font-size: 16px;
+    color: white;
+    line-height: 1em;
 }
 
 /* modal */
@@ -82,7 +92,6 @@ h2 {
     font-size: 14px;
 }
 
-
 #listdiv div ul li:hover {
     color: #fff;
     background-color: #4db6ac;
@@ -90,11 +99,5 @@ h2 {
 }
 
 #listdiv div ul li a:hover {
-    color: #fff;
-}
-
-/* information div */
-
-#selected-countries {
     color: #fff;
 }
