@@ -36,26 +36,26 @@ map = AmCharts.makeChart( "mapdiv", {
 
 map.addListener("init",function(event){
 
-$.ajax({
-  type: 'POST',
-  contentType: 'application/json',
-  url: 'http://localhost:8080/get_user_countries',
-  success: function(data){
-    var selectedCountries = data;
-    //console.log(selectedCountries);
-    localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
-    var countriesArray = JSON.parse(localStorage["selectedCountries"]);
-    var areas = [];
-    for(var i in countriesArray){
-      var id = countriesArray[i];
-      areas.push({ id: id, showAsSelected: true });
-      map.dataProvider.areas = areas;
-      map.validateData();
-      //console.log('this is the ajax function', id);
+  $.ajax({
+    type: 'POST',
+    contentType: 'application/json',
+    url: 'http://localhost:8080/get_user_countries',
+    success: function(data){
+      var selectedCountries = data;
+      //console.log(selectedCountries);
+      localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
+      var countriesArray = JSON.parse(localStorage["selectedCountries"]);
+      var areas = [];
+      for(var i in countriesArray){
+        var id = countriesArray[i];
+        areas.push({ id: id, showAsSelected: true });
+        map.dataProvider.areas = areas;
+        map.validateData();
+        //console.log('this is the ajax function', id);
+      }
+      return areas;
     }
-    return areas;
-  }
-});
+  });
 
 });
 

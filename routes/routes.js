@@ -95,17 +95,17 @@ router.get('/main', function(req, res, next) {
             if (err) throw err;
             var countriesArray = user[0].visited_countries;
             if (user[0].visited_countries.length == 0){
-                console.log('no countries visited!');
+                //console.log('no countries visited!');
                 res.send(user);
             } else {
-                console.log('this is the login country finder',user[0].visited_countries);
+                //console.log('this is the login country finder',user[0].visited_countries);
                 res.send(countriesArray);
             }
             });
         });
     }
     else {
-        console.log('user session does not exist');
+        //console.log('user session does not exist');
         res.redirect('/');
     }
 });
@@ -122,14 +122,14 @@ router.post('/user_add_country', function(req,res){
             if(err){
                 console.log(err);
             } else {
-                console.log("Successfully added");
+                //console.log("Successfully added");
 
                 User.find({
                     username: sess.user
                 }, function(err, user) {
                 if (err) throw err;
                 var countriesArray = user[0].visited_countries;
-                console.log(user[0].visited_countries);
+                //console.log(user[0].visited_countries);
                 res.send(countriesArray);
                 });
 
@@ -148,13 +148,13 @@ router.post('/user_remove_country', function(req,res){
             if(err){
                 console.log(err);
             } else {
-                console.log("Successfully removed");
+                //console.log("Successfully removed");
                 User.find({
                     username: sess.user
                 }, function(err, user) {
                 if (err) throw err;
                 var countriesArray = user[0].visited_countries;
-                console.log(user[0].visited_countries);
+                //console.log(user[0].visited_countries);
                 res.send(countriesArray);
                 });
             }
@@ -185,7 +185,7 @@ router.get('/users', function(req,res){
 router.get('/logout', function(req,res){
     req.session.destroy();
     res.redirect('/');
-    console.log('session destroyed');
+    //console.log('session destroyed');
 });
 
 module.exports = router;
