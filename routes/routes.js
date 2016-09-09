@@ -46,20 +46,13 @@ router.post('/signup', function(req,res){
                 if(err) throw err;
                 sess = req.session;
                 sess.user = req.body.username;
-                res.render('welcome', {user: req.body.username});
+                res.redirect('/main');
             });
         }
     };
     User.findOne({
         username: req.body.username
     }, callback);
-});
-
-//welcome page
-router.get('/signup', function(req, res, next) {
-    sess = req.session;
-    sess.user = req.body.username;
-    res.render('welcome');
 });
 
 //user authentication
@@ -101,9 +94,13 @@ router.get('/main', function(req, res, next) {
             }, function(err, user) {
             if (err) throw err;
             var countriesArray = user[0].visited_countries;
-            console.log('this is the login country finder',user[0].visited_countries);
-            res.send(countriesArray);
-            res.render('main');
+            if (user[0].visited_countries.length == 0){
+                console.log('no countries visited!');
+                res.send(user);
+            } else {
+                console.log('this is the login country finder',user[0].visited_countries);
+                res.send(countriesArray);
+            }
             });
         });
     }
@@ -181,6 +178,14 @@ router.get('/users', function(req,res){
                 res.redirect('/');
             }
     });
+});
+
+
+//user logout
+router.get('/logout', function(req,res){
+    req.session.destroy();
+    res.redirect('/');
+    console.log('session destroyed');
 });
 
 module.exports = router;

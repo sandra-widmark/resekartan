@@ -34,16 +34,31 @@ map = AmCharts.makeChart( "mapdiv", {
   }
 });
 
+map.addListener("init",function(event){
+
 $.ajax({
   type: 'POST',
   contentType: 'application/json',
   url: 'http://localhost:8080/get_user_countries',
   success: function(data){
     var selectedCountries = data;
-    console.log(selectedCountries);
+    //console.log(selectedCountries);
     localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
+    var countriesArray = JSON.parse(localStorage["selectedCountries"]);
+    var areas = [];
+    for(var i in countriesArray){
+      var id = countriesArray[i];
+      areas.push({ id: id, showAsSelected: true });
+      map.dataProvider.areas = areas;
+      map.validateData();
+      //console.log('this is the ajax function', id);
+    }
+    return areas;
   }
 });
+
+});
+
 
 map.addListener("clickMapObject",function(event){
 
@@ -64,7 +79,7 @@ map.addListener("clickMapObject",function(event){
       url: 'http://localhost:8080/user_add_country',
       success: function(data){
         var selectedCountries = data;
-        console.log(selectedCountries);
+        //console.log(selectedCountries);
         localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
       }
     });
@@ -78,25 +93,10 @@ map.addListener("clickMapObject",function(event){
       url: 'http://localhost:8080/user_remove_country',
       success: function(data){
         var selectedCountries = data;
-        console.log(selectedCountries);
+        //console.log(selectedCountries);
         localStorage["selectedCountries"] = JSON.stringify(selectedCountries);
       }
     });
 
   }
 });
-
-var countriesArray = JSON.parse(localStorage["selectedCountries"]);
-
-map.updateSelection = function(){
-  var areas = [];
-  for(var i in countriesArray){
-    var id = countriesArray[i];
-    areas.push({ id: id, showAsSelected: true });
-    map.dataProvider.areas = areas;
-    map.validateData();
-    console.log('det här är update-selection');
-  }
-  return areas;
-}
-map.updateSelection();

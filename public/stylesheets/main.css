@@ -93,11 +93,11 @@ h3 {
 }
 
 #listdiv div ul li:hover {
-    color: #fff;
     background-color: #4db6ac;
     cursor: pointer;
+    color: #fff;
 }
 
-#listdiv div ul li a:hover {
+#listdiv div ul a:hover {
     color: #fff;
 }
