@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    include ./modal-registration.jade
+    include ./modal-login.jade
+    include ./main-header.jade
+    .container.landing-main-content
+        h1 Välkommen #{user}
+        h2 Ditt konto är nu skapat, logga in för att börja!
+        a(class = 'waves-effect waves-light btn modal-trigger', href = '.login-form') Logga in
